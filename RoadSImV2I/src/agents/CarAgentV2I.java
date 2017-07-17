@@ -52,11 +52,11 @@ public class CarAgentV2I extends Agent {
 	private Segment currentSegment;
 	private String initialIntersection, finalIntersection;
 	private boolean smart = false;
-	private DefaultDirectedWeightedGraph<Intersection, Edge> jgraht;
+	private DefaultDirectedWeightedGraph<Intersection, Edge> jgrapht;
 	private int algorithmType;
 	
-	private AStarAdmissibleHeuristic<Intersection> admissibleHeuristic;
-	private AStarShortestPath<Intersection, Edge> astar;
+//	private AStarAdmissibleHeuristic<Intersection> admissibleHeuristic;
+//	private AStarShortestPath<Intersection, Edge> astar;
    
 
 	protected void setup() {
@@ -81,9 +81,9 @@ public class CarAgentV2I extends Agent {
 		//Get the map from an argument
 		this.map = (Map) this.getArguments()[0];
 		//Get the jgraph from the map
-		this.jgraht = this.map.getJgraht();
+		this.jgrapht = this.map.getJgrapht();
 		System.out.println("CarAgent.java-- Get JgraphT: " + 
-		                   this.jgraht.toString());
+		                   this.jgrapht.toString());
 		//Get the starting and final points of my trip
 		this.initialIntersection = (String) this.getArguments()[1];
 		this.finalIntersection = (String) this.getArguments()[2];
@@ -99,35 +99,43 @@ public class CarAgentV2I extends Agent {
 			this.algorithmType = Method.FASTEST.value;
 		} else if (routeType.equals("shortest")) {
 			this.algorithmType = Method.SHORTEST.value;
-		} else if (routeType.equals("a_star")) {
-			this.algorithmType = Method.A_STAR.value;
-			admissibleHeuristic = 
-				new AStarAdmissibleHeuristic<Intersection>() {
-				  @Override
-				  public double getCostEstimate(Intersection vs, 
-					 	                        Intersection ve) {
-					  Segment s = jgraht.getEdge(vs, ve).getSegment();
-					  return s.getLength()/s.getMaxSpeed();
-				}
-			};
-			astar = new AStarShortestPath<>(jgraht, 
-					                        admissibleHeuristic);
-			this.smart = true;
-		} else if(routeType.equals("dijsktra")) {
-			this.algorithmType = Method.DIJKSTRA.value;
-			this.smart = true;
-		} else if (routeType.equals("kshortest")) {
-			this.algorithmType = Method.KSHORTEST.value;
-			this.smart = true;
+		} else if(routeType.equals(Method.DYNAMIC.value)) {
+			this.algorithmType = Method.DYNAMIC.value;
 		}
+//		else if (routeType.equals("a_star")) {
+//			this.algorithmType = Method.A_STAR.value;
+//			admissibleHeuristic = 
+//				new AStarAdmissibleHeuristic<Intersection>() {
+//				  @Override
+//				  public double getCostEstimate(Intersection vs, 
+//					 	                        Intersection ve) {
+//					  Segment s = jgrapht.getEdge(vs, ve).getSegment();
+//					  return s.getLength()/s.getMaxSpeed();
+//				}
+//			};
+//			astar = new AStarShortestPath<>(jgrapht, 
+//					                        admissibleHeuristic);
+//			this.smart = true;
+//		} 
+//		else if(routeType.equals("dijsktra")) {
+//			this.algorithmType = Method.DIJKSTRA.value;
+//			this.smart = true;
+//		} 
+//		else if (routeType.equals("kshortest")) {
+//			this.algorithmType = Method.KSHORTEST.value;
+//			this.smart = true;
+//		}
 		
 		//Get the initial time tick from eventManager
 		tini = (long) this.getArguments()[6];
 		
+		//An unique identifier for the car
+		this.id = getName().toString();
+		
 		//Get the desired Path from the origin to the destination
 		// using the jgrapht
 		path = getPathOnMethod(initialIntersection, 
-						                finalIntersection);
+						       finalIntersection);
 		//Starting point
 		setX(path.getGraphicalPath().get(0).getOriginX());
 		setY(path.getGraphicalPath().get(0).getOriginY());
@@ -156,9 +164,6 @@ public class CarAgentV2I extends Agent {
 			
 			this.interfaceAgent = result[0];
 		}
-		
-		//An unique identifier for the car
-		this.id = getName().toString();
 
 		if(this.drawGUI){
 			//We notify the interface about the new car
@@ -175,19 +180,20 @@ public class CarAgentV2I extends Agent {
 		}
 
 		// Set the initial values for the carAgent on the road
-		Step next = path.getGraphicalPath().get(0);
-	    setCurrentSegment(next.getSegment());
+		Step current = path.getGraphicalPath().get(0);
+	    setCurrentSegment(current.getSegment());
 
 		//Register
 		ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 		msg.setOntology("carToSegmentOntology");
 		msg.setConversationId("register");
-		msg.addReceiver(next.getSegment().getSegmentAgent().getAID());
+		msg.addReceiver(current.getSegment().getSegmentAgent().getAID());
 		JSONObject carDataRegister = new JSONObject();
 		carDataRegister.put("id", getId());
 		carDataRegister.put("x", getX());
 		carDataRegister.put("y", getY());
-		
+		carDataRegister.put("currentSpeed", maxSpeed/4);
+		// When starting my route I begin with 120/4 in the first second
 		msg.setContent(carDataRegister.toString());
 		
 		send(msg);
@@ -309,13 +315,13 @@ public class CarAgentV2I extends Agent {
 	}
 	
 	public DefaultDirectedWeightedGraph<Intersection, Edge> 
-	                                                   getJgraht() {
-		return jgraht;
+	                                                   getJgrapht() {
+		return jgrapht;
 	}
 
-	public void setJgraht(
+	public void setJgrapht(
 			  DefaultDirectedWeightedGraph<Intersection,Edge> jgraht){
-		this.jgraht = jgraht;
+		this.jgrapht = jgraht;
 	}
 	
 	public boolean isSmart() {
@@ -355,26 +361,29 @@ public class CarAgentV2I extends Agent {
 			                    String finalIntersection) {
 		
 		GraphPath<Intersection, Edge> pathJGrapht = null;
-		if (algorithmType == Method.FASTEST.value) {
-			pathJGrapht = DijkstraShortestPath.findPathBetween(jgraht, 
+		if (algorithmType == Method.FASTEST.value || 
+			algorithmType == Method.DYNAMIC.value) {
+			pathJGrapht = DijkstraShortestPath.findPathBetween(jgrapht, 
 					map.getIntersectionByID(initialInterseccion),
 					map.getIntersectionByID(finalIntersection));
 		} else if (algorithmType == Method.SHORTEST.value) {
-			putWeightsAsDistancesOnGraph(jgraht);
-			pathJGrapht = DijkstraShortestPath.findPathBetween(jgraht, 
+			putWeightsAsDistancesOnGraph(jgrapht);
+			pathJGrapht = DijkstraShortestPath.findPathBetween(jgrapht, 
 					map.getIntersectionByID(initialInterseccion),
 					map.getIntersectionByID(finalIntersection));
-		} else if (algorithmType == Method.A_STAR.value) {
-			pathJGrapht = astar.getPath(
-					map.getIntersectionByID(initialInterseccion), 
-					map.getIntersectionByID(finalIntersection));
-		} else if(algorithmType == Method.DIJKSTRA.value) {
-			pathJGrapht = DijkstraShortestPath.findPathBetween(jgraht, 
-					map.getIntersectionByID(initialInterseccion),
-					map.getIntersectionByID(finalIntersection));
-		} else if (algorithmType == Method.KSHORTEST.value) {
-			this.algorithmType = Method.KSHORTEST.value;
-		}
+		} 
+//		else if (algorithmType == Method.A_STAR.value) {
+//			pathJGrapht = astar.getPath(
+//					map.getIntersectionByID(initialInterseccion), 
+//					map.getIntersectionByID(finalIntersection));
+//		} else if(algorithmType == Method.DIJKSTRA.value) {
+//			pathJGrapht = DijkstraShortestPath.findPathBetween(jgrapht, 
+//					map.getIntersectionByID(initialInterseccion),
+//					map.getIntersectionByID(finalIntersection));
+//		} 
+//		else if (algorithmType == Method.KSHORTEST.value) {
+//			this.algorithmType = Method.KSHORTEST.value;
+//		}
 		
 		List<Step> steps = new ArrayList<Step>();
 		List<Segment> segments = new ArrayList<Segment>();

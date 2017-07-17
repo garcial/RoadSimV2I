@@ -454,7 +454,7 @@ public class CanvasWorld extends JFrame
 
 						c = Color.CYAN;
 
-					}else if (m.getAlgorithmType() == Method.SMARTEST.value) {
+					}else if (m.getAlgorithmType() == Method.DYNAMIC.value) {
 
 						c = Color.PINK;
 					}

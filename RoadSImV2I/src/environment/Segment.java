@@ -80,29 +80,6 @@ public class Segment implements Serializable{
 	private String loggingDirectory;
 
 	/**
-	 * Default constructor. 
-	 */
-	public Segment(){
-
-		this.id = "";
-		this.origin = new Intersection();
-		this.destination = new Intersection();
-		this.length = 0.0;
-		this.capacity = 0;
-		this.numberTracks = 0;
-		this.steps = new LinkedList<Step>();
-		this.maxSpeed = 0;
-		this.pkIni = 0;
-		this.direction = "up";
-		this.mainContainer = null;
-		this.currentAllowedSpeed = this.maxSpeed;
-		this.serviceLevels = new HashMap<Character, Float>();
-		this.currentServiceLevel = 'A';
-		this.twinSegments = new LinkedList<String>();
-		this.drawGUI = true;
-	}
-
-	/**
 	 * Constructor. 
 	 *
 	 * @param  origin {@link Intersection} where this {@link Segment} starts.

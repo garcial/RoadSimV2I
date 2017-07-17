@@ -32,22 +32,13 @@ public class SegmentAgent extends Agent {
 	//The segment this agent belongs to
 	private Segment segment;
 	private boolean drawGUI;
+	private DFAgentDescription eventManagerAgent;
 
 	//The cars that are currently on this segment
 	private HashMap<String, CarData> cars;
-	private HashMap<String, ArrayList<String>> interactingCars;
 
-	public boolean isNewCommunication(String idCar, String otherCar) {
-		if (!interactingCars.get(idCar).contains(otherCar)) {
-			interactingCars.get(idCar).add(otherCar);
-			return true;
-		}
-		return false;
-	}
-	
-	public void addInteractionCar(String idSolicitante, String id) {
-		interactingCars.get(idSolicitante).add(id);
-	}
+	//Store the dynamic changes of service levels in all the segments
+	private HashMap<String, Double> serviceLevelChanges;
 
 	protected void setup() {
 
@@ -57,6 +48,7 @@ public class SegmentAgent extends Agent {
 		this.segment.setSegmentAgent(this);
 
 		this.cars = new HashMap<String, CarData>();
+		serviceLevelChanges = new HashMap<String, Double>();
 
 		//Register the service
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -74,8 +66,17 @@ public class SegmentAgent extends Agent {
 		} catch (FIPAException fe) { 
 			fe.printStackTrace(); 
 		}
-
-		interactingCars = new HashMap<String, ArrayList<String>>();
+		
+		dfd = new DFAgentDescription();
+		sd = new ServiceDescription();
+		sd.setType("eventManagerAgent");
+		dfd.addServices(sd);
+		DFAgentDescription[] result = null;
+		try {
+			result = DFService.searchUntilFound(
+					this, getDefaultDF(), dfd, null, 5000);
+		} catch (FIPAException e) { e.printStackTrace(); }
+		eventManagerAgent = result[0];
 		
 		//This behaviour will keep the cars updated	
 		addBehaviour(new SegmentListenBehaviour(this));
@@ -95,10 +96,9 @@ public class SegmentAgent extends Agent {
 	 * @param specialColor If we have to paint it specially
 	 * @param radio is the radio of its sensor
 	 */
-	public void addCar(String id, float x, float y) {
+	public void addCar(String id, float x, float y, float speed) {
 
-		this.cars.put(id, new CarData(id, x, y));
-		interactingCars.put(id, new ArrayList<String>());
+		this.cars.put(id, new CarData(id, x, y, speed));
 	}
 
 	/**
@@ -109,7 +109,6 @@ public class SegmentAgent extends Agent {
 	public void removeCar(String id) {
 
 		this.cars.remove(id);
-		interactingCars.remove(id);
 	}
 
 	/**
@@ -131,11 +130,12 @@ public class SegmentAgent extends Agent {
 	 * @param y New y coordinate
 	 * @param specialColor New specialcolor
 	 */
-	public void updateCar(String id, float x, float y) {
+	public void updateCar(String id, float x, float y, float speed) {
 
 		CarData aux = cars.get(id);
 		aux.setX(x);
 		aux.setY(y);
+		aux.setCurrentSpeed(speed);
 	}
 
 	/**
@@ -244,6 +244,18 @@ public class SegmentAgent extends Agent {
 	public HashMap<String, CarData> getCars() {
 		return cars;
 	}
+	
+	public void addServiceLevelChange(String segmentID, double time) {
+		serviceLevelChanges.put(segmentID, time);
+	}
+
+	public HashMap<String, Double> getServiceLevelChanges() {
+		return serviceLevelChanges;
+	}
+
+	public DFAgentDescription getEventManagerAgent() {
+		return eventManagerAgent;
+	}
 
 	/**
 	 * Auxiliary structure to keep track of the cars
@@ -253,12 +265,14 @@ public class SegmentAgent extends Agent {
 
 		private String id; // The getName() of the carAgent
 		private float x, y;
+		private float currentSpeed;
 
-		public CarData(String id, float x, float y) {
+		public CarData(String id, float x, float y, float speed) {
 
 			this.id = id;
 			this.x = x;
 			this.y = y;
+			this.currentSpeed = speed;
 		}
 
 		public String getId() {
@@ -279,6 +293,14 @@ public class SegmentAgent extends Agent {
 
 		public void setY(float y) {
 			this.y = y;
+		}
+
+		public float getCurrentSpeed() {
+			return currentSpeed;
+		}
+
+		public void setCurrentSpeed(float currentSpeed) {
+			this.currentSpeed = currentSpeed;
 		}
 
 	}

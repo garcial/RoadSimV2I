@@ -67,13 +67,15 @@ public class SegmentListenBehaviour extends Behaviour {
 
 					this.agent.updateCar(car.getString("id"), 
 							(float) car.getDouble("x"), 
-							(float) car.getDouble("y"));
+							(float) car.getDouble("y"),
+							(float) car.getDouble("currentSpeed"));
 				} else {
 					if (msg.getConversationId().equals("register")) {
 						// Register
 						this.agent.addCar(car.getString("id"), 
 								(float) car.getDouble("x"), 
-								(float) car.getDouble("y"));						
+								(float) car.getDouble("y"),
+								(float) car.getDouble("currentSpeed"));						
 					} else             
 						this.agent.removeCar(car.getString("id"));
 					

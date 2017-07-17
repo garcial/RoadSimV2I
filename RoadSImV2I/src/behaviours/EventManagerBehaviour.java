@@ -102,8 +102,7 @@ public class EventManagerBehaviour extends CyclicBehaviour {
 			/* maxSpeed car */			Integer.parseInt(parts[4]),
 			/* alg type */				parts[5],
 			/* drawGUI */				this.drawGUI,
-			/* Initial time */          currentTick, 
-			/* sensor ratio */          10});
+			/* Initial time */          currentTick });
 
 							agent.start();
 							

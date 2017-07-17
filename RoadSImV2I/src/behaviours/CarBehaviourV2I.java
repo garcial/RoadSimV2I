@@ -189,10 +189,8 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 		carDataRegister.put("id", this.carAgentV2I.getId());
 		carDataRegister.put("x", this.carAgentV2I.getX());
 		carDataRegister.put("y", this.carAgentV2I.getY());
-//		carDataRegister.put("specialColor", 
-//				            this.carAgentV2I.getSpecialColor());
-//		carDataRegister.put("radio", this.carAgentV2I.getRatio());
-		
+		carDataRegister.put("currentSpeed",
+				this.carAgentV2I.getCurrentSpeed()); 
 		msg.setContent(carDataRegister.toString());
 		myAgent.send(msg);
 	}

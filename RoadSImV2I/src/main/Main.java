@@ -141,12 +141,6 @@ public class Main {
 		jade.wrapper.AgentContainer segmentContainer = 
 				                     rt.createAgentContainer(profile);
 
-		// Wait for 1 second to finishing the starting of the segmentContainer (by the flyes)
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e3) {
-			e3.printStackTrace();
-		}
 		//Load the map
 		try {
 			// The map load the segments that create the SegmentAgent
@@ -157,8 +151,6 @@ public class Main {
 			System.out.println("Error reading the maps file.");
 			e.printStackTrace();
 		}
-
-		//Create the agents
 		
 		//Create a profile for the car container
 		profile = new ProfileImpl(null, 1099, null);
@@ -174,6 +166,13 @@ public class Main {
 		//Container that will hold the agents
 		jade.wrapper.AgentContainer carContainer = 
 				                     rt.createAgentContainer(profile);
+		
+		// Wait for 1 second to finishing the starting all the containers (by the flyes)
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e3) {
+			e3.printStackTrace();
+		}
 		
 		//Interface if is necesary
 		if(drawGUI){
@@ -198,6 +197,41 @@ public class Main {
 		} catch (InterruptedException e2) {
 			e2.printStackTrace();
 		}
+
+		
+		//EventManager
+		try {
+
+			AgentController agent = 
+					mainContainer.createNewAgent("eventManagerAgent",
+							"agents.EventManagerAgent", 
+							new Object[]{map, carContainer, 
+									     segmentContainer,
+									    "staticFiles/events", 
+									    startingTick, drawGUI});
+
+
+			agent.start();
+
+		} catch (StaleProxyException e1) {
+
+			System.out.println(
+					        "Error starting the EventManager agent");
+			e1.printStackTrace();
+		}
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e2) {
+			e2.printStackTrace();
+		}
+		
+		//Starts all the segmentAgents
+		
+		// Delte from the segment the creation of the segmentAgent and put it here.
+		
+		map.getSegmentsAux()
+		
 		
 		//TimeKeeper
 		try {
@@ -246,26 +280,6 @@ public class Main {
 				e.printStackTrace();
 			}
 		}
-		
-		//EventManager
-		try {
 
-			AgentController agent = 
-					mainContainer.createNewAgent("eventManagerAgent",
-							"agents.EventManagerAgent", 
-							new Object[]{map, carContainer, 
-									     segmentContainer,
-									    "staticFiles/events", 
-									    startingTick, drawGUI});
-
-
-			agent.start();
-
-		} catch (StaleProxyException e1) {
-
-			System.out.println(
-					        "Error starting the EventManager agent");
-			e1.printStackTrace();
-		}
 	}
 }
