@@ -1,0 +1,16 @@
+{"id":"ST-001","idSegment":"S-A1-1","originCoordinates":{"x":82,"y":566},"destinationCoordinates":{"x":208,"y":431}}
+{"id":"ST-009","idSegment":"S-A1-6","originCoordinates":{"x":208,"y":431},"destinationCoordinates":{"x":82,"y":566}}
+{"id":"ST-002","idSegment":"S-A1-2","originCoordinates":{"x":208,"y":431},"destinationCoordinates":{"x":317,"y":304}}
+{"id":"ST-010","idSegment":"S-A1-7","originCoordinates":{"x":317,"y":304},"destinationCoordinates":{"x":208,"y":431}}
+{"id":"ST-003","idSegment":"S-A1-3","originCoordinates":{"x":317,"y":304},"destinationCoordinates":{"x":423,"y":183}}
+{"id":"ST-011","idSegment":"S-A1-8","originCoordinates":{"x":423,"y":183},"destinationCoordinates":{"x":317,"y":304}}
+{"id":"ST-004","idSegment":"S-A1-4","originCoordinates":{"x":423,"y":183},"destinationCoordinates":{"x":514,"y":73}}
+{"id":"ST-012","idSegment":"S-A1-9","originCoordinates":{"x":514,"y":73},"destinationCoordinates":{"x":423,"y":183}}
+{"id":"ST-005","idSegment":"S-A1-5","originCoordinates":{"x":514,"y":73},"destinationCoordinates":{"x":560,"y":30}}
+{"id":"ST-013","idSegment":"S-A1-10","originCoordinates":{"x":560,"y":30},"destinationCoordinates":{"x":514,"y":73}}
+{"id":"ST-006","idSegment":"S-N1-1","originCoordinates":{"x":208,"y":431},"destinationCoordinates":{"x":453,"y":398}}
+{"id":"ST-014","idSegment":"S-N1-4","originCoordinates":{"x":453,"y":398},"destinationCoordinates":{"x":208,"y":431}}
+{"id":"ST-007","idSegment":"S-N1-2","originCoordinates":{"x":453,"y":398},"destinationCoordinates":{"x":579,"y":242}}
+{"id":"ST-015","idSegment":"S-N1-5","originCoordinates":{"x":579,"y":242},"destinationCoordinates":{"x":453,"y":398}}
+{"id":"ST-008","idSegment":"S-N1-3","originCoordinates":{"x":579,"y":242},"destinationCoordinates":{"x":514,"y":73}}
+{"id":"ST-016","idSegment":"S-N1-6","originCoordinates":{"x":514,"y":73},"destinationCoordinates":{"x":579,"y":242}}
