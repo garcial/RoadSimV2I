@@ -7,12 +7,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import jgrapht.Edge;
 
@@ -174,12 +172,7 @@ public class Map implements Serializable {
 					}
 
 					//Populate the map
-					JSONArray segTwinsJSON = seg.getJSONArray("twins");
-					LinkedList<String> segTwinsList = new LinkedList<String>();
-					for (int i = 0; i < segTwinsJSON.length(); i++){
-						segTwinsList.add((String)segTwinsJSON.get(i));
-					}
-					Segment segment = new Segment(seg.getString("id"), 
+					Segment segment = new Segment(this, seg.getString("id"), 
 					          origin, destination, seg.getDouble("length"),
 					          seg.getInt("maxSpeed"), 
 					          seg.getInt("capacity"),
@@ -188,7 +181,7 @@ public class Map implements Serializable {
 					          this.mainContainer, this.segmentLogging, 
 					          this.loggingDirectory, this.drawGUI,
 					          seg.getString("direction"),
-					          seg.getDouble("pkstart"), segTwinsList);
+					          seg.getDouble("pkstart"));
 
 
 					if(origin != null){

@@ -10,19 +10,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
-import org.json.JSONObject;
-
 import behaviours.EventManagerBehaviour;
-import environment.Intersection;
 import environment.Map;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jgrapht.Edge;
 
 /**
  * This agent is in charge of launching cars at specific times
@@ -34,8 +28,6 @@ public class EventManagerAgent extends Agent {
 	private static final long serialVersionUID = 8650883603283102448L;
 
 	private int previousMinute;
-	
-//	private long timeElapsed;
 
 	private Set<String> aux;
 
@@ -51,7 +43,6 @@ public class EventManagerAgent extends Agent {
 	private DFAgentDescription interfaceAgent;
 	
 	private boolean drawGUI;
-	private DefaultDirectedWeightedGraph<Intersection, Edge> jgrapht;
 
 	protected void setup() {
 
@@ -215,12 +206,13 @@ public class EventManagerAgent extends Agent {
 		this.interfaceAgent = interfaceAgent;
 	}
 
-	public void updateMap(JSONObject mapData) {
-		jgrapht = map.getJgrapht();
-		for(String segmentID:mapData.keySet()) {
-			jgrapht.setEdgeWeight(map.getEdgeBySegmentID(segmentID), 
-                    mapData.getDouble(segmentID));
-		}
-		
-	}
 }
+
+//public void updateMap(JSONObject mapData) {
+//jgrapht = map.getJgrapht();
+//for(String segmentID:mapData.keySet()) {
+//	jgrapht.setEdgeWeight(map.getEdgeBySegmentID(segmentID), 
+//            mapData.getDouble(segmentID));
+//}
+//
+//}

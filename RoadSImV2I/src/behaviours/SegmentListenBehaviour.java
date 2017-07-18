@@ -1,15 +1,14 @@
 package behaviours;
 
-import java.util.HashMap;
-
 import org.json.JSONObject;
-
 import agents.SegmentAgent;
+import agents.SegmentAgent.CarData;
 import environment.Segment;
 import jade.core.AID;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jgrapht.Edge;
 
 /**
  * This behaviour is used by the SegmentAgentV2I and listens to 
@@ -39,13 +38,10 @@ public class SegmentListenBehaviour extends Behaviour {
 	private SegmentAgent agent;
 	
 	private char previousServiceLevel;
-	private HashMap<String, Character> newServiceLevels;
-	
 	
 	//Constructor
 	public SegmentListenBehaviour(SegmentAgent agent) {
 		previousServiceLevel = 'A';
-		newServiceLevels = new HashMap<String, Character>();
 		this.agent = agent;
 	}
 
@@ -114,34 +110,26 @@ public class SegmentListenBehaviour extends Behaviour {
 					agent.send(msg2);	
 					
 					if (currentSL != previousServiceLevel) {
-						segment.setCurrentServiceLevel(previousServiceLevel);
-						msg2 = new ACLMessage(ACLMessage.INFORM);
-						msg2.setOntology("serviceLevelOntology");
-						JSONObject serviceLevelData = new JSONObject();
-						serviceLevelData.put("segment", segment.getId());
-						serviceLevelData.put("sl", currentSL);
-						msg2.setContent(serviceLevelData.toString());
-						//TODO:Add list of receivers (other segments)
-						agent.send(msg2);
-					}
-					
-					if (msg.getConversationId().equals("deregister")) {
-						msg2 = new ACLMessage(ACLMessage.INFORM);
-						msg2.setOntology("serviceLevelChangesOntology");
-						JSONObject data = new JSONObject();
-						//TODO:Put pairs: (idSegment,SL) in newServiceLevels
-						msg2.setContent(data.toString());
-						msg2.addReceiver(msg.getSender());
+						//Change the weight of this edge in the 
+						//  jgrapht
+						//Start computing the average speed
+						double averageSpeed = 0.0;
+						for(CarData cd:agent.getCars().values()) {
+							averageSpeed += cd.getCurrentSpeed();
+						}
+						averageSpeed = averageSpeed / numCars;
+						//Update the weight in the jgraph of the map
+						Edge edge = agent.getMap().getEdgeBySegmentID(
+								          segment.getId());
+						agent.getMap().getJgrapht().setEdgeWeight(edge,
+								 segment.getLength() /  averageSpeed );
 					}
 				}
 				
 			} else if (msg.getOntology().
-					        equals("eventManagerToSegmentOntology")) {
-				
-				Segment segment = this.agent.getSegment();
-				
+					        equals("eventManagerToSegmentOntology")) {				
+				Segment segment = this.agent.getSegment();				
 				char serviceLevel = msg.getContent().charAt(0);
-				
 				segment.setCurrentServiceLevel(serviceLevel);
 			}
 			

@@ -1,7 +1,6 @@
 package environment;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +17,7 @@ import jade.wrapper.StaleProxyException;
 public class Segment implements Serializable{
 
 	private static final long serialVersionUID = -6853406084306746147L;
-
+	
 	//Unique id
 	private String id;
 
@@ -57,9 +56,6 @@ public class Segment implements Serializable{
 
 	//Variable to draw the GUI
 	private boolean drawGUI;
-	
-	//List with the twins segments
-	private List<String> twinSegments;
 
 	//Segment agent
 	private SegmentAgent segmentAgent;
@@ -86,12 +82,12 @@ public class Segment implements Serializable{
 	 * @param  destination {@link Intersection} where this {@link Segment} ends.
 	 * @param  length The length of this {@link Segment} in Km.
 	 */
-	public Segment(String id, Intersection origin, Intersection destination, 
+	public Segment(Map map, String id, Intersection origin, Intersection destination, 
 			       double length, int maxSpeed, int capacity, int density, 
 			       int numberTracks, jade.wrapper.AgentContainer mainContainer, 
 			       boolean segmentLogging, String loggingDirectory, boolean drawGUI,
-			       String direction, double pkstart, LinkedList segTwinsList){
-
+			       String direction, double pkstart){
+		
 		this.id = id;
 		this.origin = origin;
 		this.destination = destination;
@@ -110,7 +106,6 @@ public class Segment implements Serializable{
 		this.drawGUI = drawGUI;
 		this.direction = direction;
 		this.pkIni = (float) pkstart;
-		this.twinSegments = segTwinsList;
 		
 		//Put the service levels
 		this.serviceLevels.put('A', 1.00f);
@@ -125,7 +120,7 @@ public class Segment implements Serializable{
 
 			//Agent Controller to segments with Interface
 			AgentController agent = mainContainer.createNewAgent(
-					this.id, "agents.SegmentAgent", new Object[]{this, this.drawGUI});
+					this.id, "agents.SegmentAgent", new Object[]{this, map, this.drawGUI});
 
 			agent.start();
 			
@@ -140,7 +135,7 @@ public class Segment implements Serializable{
 		this.steps.add(step);
 	}
 
-	//Setters and getters
+	//Setters and getters		
 	public String getId() {
 		return id;
 	}
@@ -227,10 +222,6 @@ public class Segment implements Serializable{
 
 	public String getLoggingDirectory() {
 		return loggingDirectory;
-	}
-	
-	public List<String> getTwinSegments() {
-		return twinSegments;
 	}
 
 	public String getDirection() {

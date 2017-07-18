@@ -13,8 +13,6 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import trafficData.TrafficData;
-import jgrapht.Edge;
 
 /**
  * This behaviour is used by the CarAgentV2I and calculates the next 

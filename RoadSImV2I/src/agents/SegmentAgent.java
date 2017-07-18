@@ -5,14 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import behaviours.SegmentListenBehaviour;
 import behaviours.SegmentSendToDrawBehaviour;
+import environment.Map;
 import environment.Segment;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -32,23 +30,19 @@ public class SegmentAgent extends Agent {
 	//The segment this agent belongs to
 	private Segment segment;
 	private boolean drawGUI;
-	private DFAgentDescription eventManagerAgent;
+	private Map map;
 
 	//The cars that are currently on this segment
 	private HashMap<String, CarData> cars;
-
-	//Store the dynamic changes of service levels in all the segments
-	private HashMap<String, Double> serviceLevelChanges;
 
 	protected void setup() {
 
 		//Get the segment from parameter
 		this.segment = (Segment) this.getArguments()[0];
-		this.drawGUI = (boolean) this.getArguments()[1];
+		this.map = (Map) this.getArguments()[1];
+		this.drawGUI = (boolean) this.getArguments()[2];
 		this.segment.setSegmentAgent(this);
-
 		this.cars = new HashMap<String, CarData>();
-		serviceLevelChanges = new HashMap<String, Double>();
 
 		//Register the service
 		DFAgentDescription dfd = new DFAgentDescription();
@@ -66,17 +60,6 @@ public class SegmentAgent extends Agent {
 		} catch (FIPAException fe) { 
 			fe.printStackTrace(); 
 		}
-		
-		dfd = new DFAgentDescription();
-		sd = new ServiceDescription();
-		sd.setType("eventManagerAgent");
-		dfd.addServices(sd);
-		DFAgentDescription[] result = null;
-		try {
-			result = DFService.searchUntilFound(
-					this, getDefaultDF(), dfd, null, 5000);
-		} catch (FIPAException e) { e.printStackTrace(); }
-		eventManagerAgent = result[0];
 		
 		//This behaviour will keep the cars updated	
 		addBehaviour(new SegmentListenBehaviour(this));
@@ -245,16 +228,8 @@ public class SegmentAgent extends Agent {
 		return cars;
 	}
 	
-	public void addServiceLevelChange(String segmentID, double time) {
-		serviceLevelChanges.put(segmentID, time);
-	}
-
-	public HashMap<String, Double> getServiceLevelChanges() {
-		return serviceLevelChanges;
-	}
-
-	public DFAgentDescription getEventManagerAgent() {
-		return eventManagerAgent;
+	public Map getMap() {
+		return map;
 	}
 
 	/**

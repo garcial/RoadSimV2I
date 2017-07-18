@@ -1,7 +1,6 @@
 package main;
 
 import java.io.IOException;
-
 import environment.Map;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -22,9 +21,6 @@ public class Main {
 	
 	//Finish the simulation at specific tick: 00:00
 	private static final long finishingTick = 24*3600;
-	
-	//Random smart cars from the beginning
-	private static final int numberOfCars = 0;
 	
 	//Draw the GUI
 	private static final boolean drawGUI = true;
@@ -141,13 +137,11 @@ public class Main {
 		jade.wrapper.AgentContainer segmentContainer = 
 				                     rt.createAgentContainer(profile);
 
-		//Load the map
+		//Load the map (including the related segmentAgents)
 		try {
-			// The map load the segments that create the SegmentAgent
 			map = new Map("staticFiles/map", segmentContainer,
 					      segmentLogging, loggingDirectory, drawGUI);
 		} catch (IOException e) {
-
 			System.out.println("Error reading the maps file.");
 			e.printStackTrace();
 		}
@@ -167,7 +161,8 @@ public class Main {
 		jade.wrapper.AgentContainer carContainer = 
 				                     rt.createAgentContainer(profile);
 		
-		// Wait for 1 second to finishing the starting all the containers (by the flyes)
+		// Wait for 1 second to finishing the starting all the 
+		//    containers (by the flyes)
 		try {
 			Thread.sleep(1000);
 		} catch (InterruptedException e3) {
@@ -197,11 +192,9 @@ public class Main {
 		} catch (InterruptedException e2) {
 			e2.printStackTrace();
 		}
-
 		
 		//EventManager
 		try {
-
 			AgentController agent = 
 					mainContainer.createNewAgent("eventManagerAgent",
 							"agents.EventManagerAgent", 
@@ -209,12 +202,8 @@ public class Main {
 									     segmentContainer,
 									    "staticFiles/events", 
 									    startingTick, drawGUI});
-
-
 			agent.start();
-
 		} catch (StaleProxyException e1) {
-
 			System.out.println(
 					        "Error starting the EventManager agent");
 			e1.printStackTrace();
@@ -226,13 +215,6 @@ public class Main {
 			e2.printStackTrace();
 		}
 		
-		//Starts all the segmentAgents
-		
-		// Delte from the segment the creation of the segmentAgent and put it here.
-		
-		map.getSegmentsAux()
-		
-		
 		//TimeKeeper
 		try {
 			AgentController agent = 
@@ -240,45 +222,10 @@ public class Main {
 							"agents.TimeKeeperAgent",
 							new Object[]{drawGUI,tickLength,
 									startingTick, finishingTick});
-
 			agent.start();
-
 		} catch (StaleProxyException e1) {
-
 			System.out.println("Error starting the TimeKeeper agent");
 			e1.printStackTrace();
-		}
-
-
-
-		//Cars
-
-
-		for (int i=0; i<numberOfCars; i++){
-			
-			String initialintersection = map.getRandomIntersection();
-			
-			String finalIntersection = map.getRandomIntersection();
-			
-			while (initialintersection.equals(finalIntersection)) {
-				
-				finalIntersection = map.getRandomIntersection();
-			}
-
-			try {
-
-				AgentController agent = 
-						carContainer.createNewAgent("car" + 
-				              Integer.toString(i) +
-						      "Agent", "agents.CarAgent", 
-						       new Object[]{map, initialintersection,
-						        		    finalIntersection, 120, 
-						        		    "fastest", drawGUI});
-				agent.start();				
-			} catch (StaleProxyException e) {
-				System.out.println("Error starting a car agent");
-				e.printStackTrace();
-			}
 		}
 
 	}
