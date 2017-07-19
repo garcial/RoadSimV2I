@@ -96,7 +96,7 @@ public class EventManagerBehaviour extends CyclicBehaviour {
 									createNewAgent("car" + 
 									Long.toString(currentTick) + 
 									Integer.toString(counter), 
-									"agents.CarAgent", new Object[]{
+									"agents.CarAgentV2I", new Object[]{
 										this.agent.getMap(), 
 			/* IntOrigin, IntDest */	parts[2], parts[3], 
 			/* maxSpeed car */			Integer.parseInt(parts[4]),

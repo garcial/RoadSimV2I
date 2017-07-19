@@ -63,8 +63,6 @@ public class InterfaceDrawBehaviour extends Behaviour {
 
 								m.setX((float) obj.getDouble("x"));
 								m.setY((float) obj.getDouble("y"));
-								m.setSpecialColor(
-									obj.getBoolean("specialColor"));
 							}
 						}
 

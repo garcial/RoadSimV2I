@@ -36,6 +36,7 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 	//For recording how many km has been covered yet of the current
 	// Step
 	private float stepDistanceCovered;
+	private float proportion;
 
 	public CarBehaviourV2I(CarAgentV2I a, long timeout, boolean drawGUI) {
 
@@ -88,11 +89,11 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 				float currentPk = this.carAgentV2I.getCurrentPk();
 
 				//TODO: Revise formula to compute pkIncrement
-				float deltaTime = (currentTick - previousTick) / 3600;
+				float deltaTime = (currentTick - previousTick) / 3600f;
 				float deltaPk = (float) currentSpeed * deltaTime;
 				System.out.println("PKCurrent: " + currentPk);
 				//Compute distance covered
-				float graphIncrement = deltaPk * 
+				float graphCovered = deltaPk * 
 						        currentStep.getStepGraphicalLength() /
 						        currentStep.getStepLength();
 				//Virtual position
@@ -123,9 +124,8 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 
 				if (!this.done) {
 					//Proportion inside the segment
-					float proportion = stepDistanceCovered / 
-							           currentStep.getStepLength();
-					//TODO:Maybe the DIVISOR is currentStep.getStepGraphicalLength() ????
+//					float proportion = stepDistanceCovered / 
+//							           currentStep.getStepLength();
 					
 					//Update the current pk when updating the x and y
 					if("up".compareTo(this.carAgentV2I.getCurrentSegment().
@@ -134,10 +134,15 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 					} else {
 						this.carAgentV2I.setCurrentPk(currentPk - stepDistanceCovered);
 					}
-					this.carAgentV2I.setX(((1 - proportion) * currentX + 
-							proportion * currentStep.getDestinationX()));
-					this.carAgentV2I.setY(((1 - proportion) * currentY + 
-							proportion * currentStep.getDestinationY()));
+					proportion = graphCovered / currentStep.getStepGraphicalLength();
+					this.carAgentV2I.setX(currentX + proportion * 
+							(currentStep.getDestinationX() - currentStep.getOriginX()));
+					this.carAgentV2I.setY(currentY + proportion * 
+							(currentStep.getDestinationY() - currentStep.getOriginY()));
+//					this.carAgentV2I.setX(((1 - proportion) * currentX + 
+//							proportion * currentStep.getDestinationX()));
+//					this.carAgentV2I.setY(((1 - proportion) * currentY + 
+//							proportion * currentStep.getDestinationY()));
 
 					//If I am in a new segment
 					if (!this.carAgentV2I.getCurrentSegment().

@@ -18,6 +18,7 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 import org.json.JSONObject;
 
 import behaviours.CarBehaviourV2I;
+import behaviours.CarSegmentDensityBehaviour;
 import environment.Intersection;
 import environment.Map;
 import environment.Path;
@@ -173,12 +174,12 @@ public class CarAgentV2I extends Agent {
 		setCurrentTrafficDensity(densityData.getDouble("density"));
 
 		//Change my speed according to the maximum allowed speed
-	    setCurrentSpeed(Math.min(getMaxSpeed(), 
+	    setCurrentSpeed(Math.min(getMaxSpeed()/4, 
 	    			getCurrentSegment().getCurrentAllowedSpeed()));
-		
-	    //The special color is useless without the interfaceAgent
+
 		//Runs the agent
 		addBehaviour(new CarBehaviourV2I(this, 50, this.drawGUI));
+		addBehaviour(new CarSegmentDensityBehaviour(this));
 
 	}
 	
