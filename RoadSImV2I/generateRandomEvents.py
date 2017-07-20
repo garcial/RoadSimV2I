@@ -1,24 +1,28 @@
 import random
 from random import randint
 
-intersections = ['I-CV10-01', 'I-CV10-02', 'I-CV10-03', 'I-CV10-04', 'I-CV10-05', 'I-CV10-06',
-'I-CV10-07', 'I-CV10-08', 'I-CV10-09', 'I-CV10-10', 'I-N340-01', 'I-N340-02-AP7-02', 'I-N340-03', 'I-N340-04', 'I-N340-05',
-'I-N340-06', 'I-N340-07', 'I-N340-08', 'I-N340-09', 'I-CS22-01', 'I-CS22-02', 'I-CS22-03', 'I-CS22-04',
-'I-AP7-01', 'I-AP7-03', 'I-AP7-04']
+intersectionsBn = ['I-CV1501-01', 'I-CV1501-02', 'I-CV149-03', 'I-N340-03', 'I-N340-04']
+intersectionsCs = ['I-N340-01','I-CV1520-01', 'I-N340a-01',  'I-CV149-01', ]
 
-algorithms = ['shortest', 'fastest', 'smartest']
+algorithms = ['shortest', 'fastest', 'startSmart', 'dynamicSmart']
 
-eventsFile = open("events.csv", 'a')
+eventsFile = open("eventos.csv", 'a')
 
 def generateRandomSample(startinHour, finalHour, num, algorithmType=None):
 
-	for x in xrange(num):
+	for x in range(num):
 
-		start = random.choice(intersections)
-		end = random.choice(intersections)
+		if(randint(0,2) == 0):
+ 			A = intersectionsCs
+ 			B = intersectionsBn
+		else:
+			A = intersectionsBn
+			B = intersectionsCs
+		start = random.choice(A)
+		end = random.choice(B)
 
 		while (start == end):
-			end = random.choice(intersections)
+			end = random.choice(B)
 
 		hour = randint(startinHour, finalHour)
 		minute = randint(0, 59)
@@ -50,19 +54,20 @@ def generateStress(hour, minute, num):
 				"," + str(speed) + "," + random.choice(algorithms) + "\n")
 
 #All day
-generateRandomSample(8, 23, 5000)
+print('Genera datos desde las 18:00 hasta las 21:00')
+generateRandomSample(18, 21, 15000)
 
 #Morning
-generateRandomSample(8, 9, 1000)
+#generateRandomSample(8, 9, 1000)
 
 #Lunch time
-generateRandomSample(13, 15, 1000)
+#generateRandomSample(13, 15, 1000)
 
 #Evening
-generateRandomSample(16, 19, 1000)
+#generateRandomSample(16, 19, 1000)
 
 #Night
-generateRandomSample(20, 22, 1000)
+#generateRandomSample(20, 22, 1000)
 
 #Smart cars
-generateRandomSample(8, 23, 1000, 'smartest')
+#generateRandomSample(8, 23, 1000, 'smartest')

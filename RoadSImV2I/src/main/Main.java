@@ -17,10 +17,10 @@ public class Main {
 	private static final long tickLength = 1L;
 	
 	//Start at specific tick: 7:59 that in seconds is ..
-	private static final long startingTick = 7*3600 + 59*60;
+	private static final long startingTick = 17*3600 + 59*60;
 	
 	//Finish the simulation at specific tick: 00:00
-	private static final long finishingTick = 24*3600;
+	private static final long finishingTick = 21*3600;
 	
 	//Draw the GUI
 	private static final boolean drawGUI = true;
