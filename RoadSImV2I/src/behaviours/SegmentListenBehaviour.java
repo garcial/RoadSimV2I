@@ -119,10 +119,10 @@ public class SegmentListenBehaviour extends Behaviour {
 						}
 						averageSpeed = averageSpeed / numCars;
 						//Update the weight in the jgraph of the map
-						Edge edge = agent.getMap().getEdgeBySegmentID(
-								          segment.getId());
-						agent.getMap().getJgrapht().setEdgeWeight(edge,
-								 segment.getLength() /  averageSpeed );
+
+						agent.getJgrapht().setEdgeWeight(
+								agent.getSegment().getMyEdge(),
+								segment.getLength() /  averageSpeed );
 					}
 				}
 				

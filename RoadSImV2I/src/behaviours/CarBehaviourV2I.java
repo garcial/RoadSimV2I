@@ -81,6 +81,7 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 				// First calculate the currentSpeed,Greenshield model
 				int currentSpeed = (int) Math.min(
 				     carAgentV2I.getMaxSpeed(),
+				     (carAgentV2I.getCurrentTrafficDensity() >= 28.2)? 5:
 				     carAgentV2I.getCurrentSegment().getMaxSpeed() *
 	                 (1-carAgentV2I.getCurrentTrafficDensity()/28.2));
 				
@@ -91,7 +92,7 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 				//TODO: Revise formula to compute pkIncrement
 				float deltaTime = (currentTick - previousTick) / 3600f;
 				float deltaPk = (float) currentSpeed * deltaTime;
-				System.out.println("PKCurrent: " + currentPk);
+//				System.out.println("PKCurrent: " + currentPk);
 				//Compute distance covered
 				float graphCovered = deltaPk * 
 						        currentStep.getStepGraphicalLength() /

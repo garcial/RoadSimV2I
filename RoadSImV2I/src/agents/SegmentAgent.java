@@ -6,10 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import behaviours.SegmentListenBehaviour;
 import behaviours.SegmentSendToDrawBehaviour;
+import environment.Intersection;
 import environment.Map;
 import environment.Segment;
 import jade.core.Agent;
@@ -17,6 +20,7 @@ import jade.domain.DFService;
 import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jgrapht.Edge;
 
 /**
  * This agent will keep track of the cars that are inside between two
@@ -30,7 +34,7 @@ public class SegmentAgent extends Agent {
 	//The segment this agent belongs to
 	private Segment segment;
 	private boolean drawGUI;
-	private Map map;
+	private DirectedWeightedMultigraph<Intersection, Edge> jgrapht;
 
 	//The cars that are currently on this segment
 	private HashMap<String, CarData> cars;
@@ -39,9 +43,10 @@ public class SegmentAgent extends Agent {
 
 		//Get the segment from parameter
 		this.segment = (Segment) this.getArguments()[0];
-		this.map = (Map) this.getArguments()[1];
+		this.jgrapht = (DirectedWeightedMultigraph<Intersection, Edge>) this.getArguments()[1];
 		this.drawGUI = (boolean) this.getArguments()[2];
 		this.segment.setSegmentAgent(this);
+		System.out.println("El agente segmento " + segment.getId() + " asocia el agente segmento " + getLocalName());
 		this.cars = new HashMap<String, CarData>();
 
 		//Register the service
@@ -228,8 +233,8 @@ public class SegmentAgent extends Agent {
 		return cars;
 	}
 	
-	public Map getMap() {
-		return map;
+	public DirectedWeightedMultigraph<Intersection, Edge> getJgrapht() {
+		return jgrapht;
 	}
 
 	/**

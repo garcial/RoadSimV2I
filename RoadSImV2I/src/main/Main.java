@@ -209,11 +209,11 @@ public class Main {
 			e1.printStackTrace();
 		}
 		
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e2) {
-			e2.printStackTrace();
-		}
+//		try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e2) {
+//			e2.printStackTrace();
+//		}
 		
 		//TimeKeeper
 		try {

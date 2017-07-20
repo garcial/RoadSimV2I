@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.jgrapht.graph.DirectedWeightedMultigraph;
+
 import agents.SegmentAgent;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
+import jgrapht.Edge;
 
 /**
  * Represents a section of a road in a single direction.
@@ -56,6 +59,9 @@ public class Segment implements Serializable{
 
 	//Variable to draw the GUI
 	private boolean drawGUI;
+	
+	//My edge of the jgrapht
+	Edge myEdge;
 
 	//Segment agent
 	private SegmentAgent segmentAgent;
@@ -82,7 +88,8 @@ public class Segment implements Serializable{
 	 * @param  destination {@link Intersection} where this {@link Segment} ends.
 	 * @param  length The length of this {@link Segment} in Km.
 	 */
-	public Segment(Map map, String id, Intersection origin, Intersection destination, 
+	public Segment(DirectedWeightedMultigraph<Intersection, Edge> jgrapht, 
+			       String id, Intersection origin, Intersection destination, 
 			       double length, int maxSpeed, int capacity, int density, 
 			       int numberTracks, jade.wrapper.AgentContainer mainContainer, 
 			       boolean segmentLogging, String loggingDirectory, boolean drawGUI,
@@ -120,7 +127,7 @@ public class Segment implements Serializable{
 
 			//Agent Controller to segments with Interface
 			AgentController agent = mainContainer.createNewAgent(
-					this.id, "agents.SegmentAgent", new Object[]{this, map, this.drawGUI});
+					this.id, "agents.SegmentAgent", new Object[]{this, jgrapht, this.drawGUI});
 
 			agent.start();
 			
@@ -230,6 +237,14 @@ public class Segment implements Serializable{
 
 	public void setDirection(String direction) {
 		this.direction = direction;
+	}
+
+	public void setMyEdge(Edge e) {
+		myEdge = e;		
+	}
+	
+	public Edge getMyEdge() {
+		return myEdge;
 	}
 		
 }

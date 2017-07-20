@@ -141,7 +141,7 @@ public class TimeKeeperAgent extends Agent {
 				msg.addUserDefinedParameter(ACLMessage.SF_TIMEOUT,
 						                    "-1");
 				msg.addReceiver(finalTopic);
-				System.out.println("TimeKeeperAgent: " + timeKeeperAgent.currentTick);
+//				System.out.println("TimeKeeperAgent: " + timeKeeperAgent.currentTick);
 				msg.setContent(Long.toString(timeKeeperAgent.
 						                               currentTick));
 				myAgent.send(msg);

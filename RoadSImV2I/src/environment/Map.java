@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 import org.json.JSONObject;
 import jgrapht.Edge;
 
@@ -31,7 +30,7 @@ public class Map implements Serializable {
 	private Integer segmentCount;
 	private List<Intersection> intersections;
 	// JGRAPHT
-	private DefaultDirectedWeightedGraph<Intersection, Edge> jgrapht;
+	private DirectedWeightedMultigraph<Intersection, Edge> jgrapht;
 
 	//The container where the segment agents will be created
 	private transient jade.wrapper.AgentContainer mainContainer;
@@ -61,7 +60,7 @@ public class Map implements Serializable {
 		this.segmentLogging = segmentLogging;
 		this.loggingDirectory = loggingDirectory;
 		this.jgrapht = 
-				new DefaultDirectedWeightedGraph<Intersection, Edge>
+				new DirectedWeightedMultigraph<Intersection, Edge>
 		                (Edge.class);
 
 		//Read the files
@@ -172,7 +171,7 @@ public class Map implements Serializable {
 					}
 
 					//Populate the map
-					Segment segment = new Segment(this, seg.getString("id"), 
+					Segment segment = new Segment(this.getJgrapht(), seg.getString("id"), 
 					          origin, destination, seg.getDouble("length"),
 					          seg.getInt("maxSpeed"), 
 					          seg.getInt("capacity"),
@@ -194,7 +193,9 @@ public class Map implements Serializable {
 					
 					//Add an Edge to de Jgraph
 					if(origin != null && destination != null){
-						Edge e = new Edge(segment);
+						Edge e = new Edge(segment.getId(), 
+								          segment.getLength(), 
+								          segment.getMaxSpeed());
 						System.out.println("Map.java-- Add Edge " + 
 						                   segment.getId() +": [ " +
 								           e.toString() + " ]");
@@ -203,6 +204,7 @@ public class Map implements Serializable {
 						this.jgrapht.setEdgeWeight(e, 
 								segment.getLength() /
 								segment.getMaxSpeed());
+						segment.setMyEdge(e);
 						this.edgesAux.put(segment.getId(), e);
 					}
 
@@ -312,7 +314,7 @@ public class Map implements Serializable {
 	/**
 	 * Returns the jgraph with the structure of the map
 	 * */
-	public DefaultDirectedWeightedGraph<Intersection, Edge> 
+	public DirectedWeightedMultigraph<Intersection, Edge> 
 	       getJgrapht() {
 		return jgrapht;
 	}

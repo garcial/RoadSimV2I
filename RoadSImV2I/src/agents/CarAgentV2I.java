@@ -8,15 +8,12 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import searchAlgorithms.Method;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.graph.DefaultDirectedWeightedGraph;
+import org.jgrapht.graph.DirectedWeightedMultigraph;
 import org.json.JSONObject;
-
 import behaviours.CarBehaviourV2I;
 import behaviours.CarSegmentDensityBehaviour;
 import environment.Intersection;
@@ -51,7 +48,7 @@ public class CarAgentV2I extends Agent {
 	private Segment currentSegment;
 	private String initialIntersection, finalIntersection;
 	private boolean smart = false;
-	private DefaultDirectedWeightedGraph<Intersection, Edge> jgrapht;
+	private DirectedWeightedMultigraph<Intersection, Edge> jgrapht;
 	private int algorithmType;
 
 	protected void setup() {
@@ -150,6 +147,7 @@ public class CarAgentV2I extends Agent {
 
 		// Set the initial values for the carAgent on the road
 		Step current = path.getGraphicalPath().get(0);
+//		System.out.println(getLocalName() + " Current step " + current.getSegment().getSegmentAgent());
 	    setCurrentSegment(current.getSegment());
 
 		//Register
@@ -279,13 +277,13 @@ public class CarAgentV2I extends Agent {
 		return finalIntersection;
 	}
 	
-	public DefaultDirectedWeightedGraph<Intersection, Edge> 
+	public DirectedWeightedMultigraph<Intersection, Edge> 
 	                                                   getJgrapht() {
 		return jgrapht;
 	}
 
 	public void setJgrapht(
-			  DefaultDirectedWeightedGraph<Intersection,Edge> jgraht){
+			  DirectedWeightedMultigraph<Intersection,Edge> jgraht){
 		this.jgrapht = jgraht;
 	}
 	
@@ -325,16 +323,16 @@ public class CarAgentV2I extends Agent {
 					map.getIntersectionByID(finalIntersection));
 		} else if (algorithmType == Method.SHORTEST.value) {
 			@SuppressWarnings("unchecked")
-			DefaultDirectedWeightedGraph<Intersection, Edge> jgraphtClone = 
-					(DefaultDirectedWeightedGraph<Intersection, Edge>) jgrapht.clone();
+			DirectedWeightedMultigraph<Intersection, Edge> jgraphtClone = 
+					(DirectedWeightedMultigraph<Intersection, Edge>) jgrapht.clone();
 			putWeightsAsDistancesOnGraph(jgraphtClone);
 			pathJGrapht = DijkstraShortestPath.findPathBetween(jgraphtClone, 
 					map.getIntersectionByID(initialInterseccion),
 					map.getIntersectionByID(finalIntersection));
 		} else if (algorithmType == Method.FASTEST.value) {
 			@SuppressWarnings("unchecked")
-			DefaultDirectedWeightedGraph<Intersection, Edge> jgraphtClone = 
-					(DefaultDirectedWeightedGraph<Intersection, Edge>) jgrapht.clone();
+			DirectedWeightedMultigraph<Intersection, Edge> jgraphtClone = 
+					(DirectedWeightedMultigraph<Intersection, Edge>) jgrapht.clone();
 			putWeightAsTripMaxSpeedOnGraph(jgraphtClone);
 			pathJGrapht = DijkstraShortestPath.findPathBetween(jgraphtClone, 
 					map.getIntersectionByID(initialInterseccion),
@@ -344,25 +342,25 @@ public class CarAgentV2I extends Agent {
 		List<Step> steps = new ArrayList<Step>();
 		List<Segment> segments = new ArrayList<Segment>();
 		for(Edge e: pathJGrapht.getEdgeList()){
-			steps.addAll(e.getSegment().getSteps());
-			segments.add(e.getSegment());
+			steps.addAll(map.getSegmentByID(e.getIdSegment()).getSteps());
+			segments.add(map.getSegmentByID(e.getIdSegment()));
 		}
 		return new Path(pathJGrapht.getVertexList(),
 				        steps, segments);
 	}
 
 	private void putWeightsAsDistancesOnGraph(
-			DefaultDirectedWeightedGraph<Intersection, Edge> jgraht2) {
+			DirectedWeightedMultigraph<Intersection, Edge> jgraht2) {
 		for(Edge e: jgraht2.edgeSet()) {
-			jgraht2.setEdgeWeight(e, e.getSegment().getLength());
+			jgraht2.setEdgeWeight(e, e.getLength());
 		}
 	}
 	
 	private void putWeightAsTripMaxSpeedOnGraph(
-			DefaultDirectedWeightedGraph<Intersection, Edge> jgraht2) {
-		for(Edge e: jgraht2.edgeSet()) {
-			jgraht2.setEdgeWeight(e, e.getSegment().getLength() /
-					                 e.getSegment().getMaxSpeed());
+			DirectedWeightedMultigraph<Intersection, Edge> jgraphtClone) {
+		for(Edge e: jgraphtClone.edgeSet()) {
+			jgraphtClone.setEdgeWeight(e, e.getLength() /
+					                 e.getMaxSpeed());
 		}
 	}
 }
