@@ -4,7 +4,7 @@ from random import randint
 intersectionsBn = ['I-CV1501-01', 'I-CV1501-02', 'I-CV149-03', 'I-N340-03', 'I-N340-04']
 intersectionsCs = ['I-N340-01','I-CV1520-01', 'I-N340a-01',  'I-CV149-01', ]
 
-algorithms = ['shortest', 'fastest', 'startSmart', 'dynamicSmart']
+algorithms = ['dynamicSmart']
 
 eventsFile = open("eventos.csv", 'a')
 
