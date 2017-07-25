@@ -109,15 +109,7 @@ public class CarAgentV2I extends Agent {
 						       finalIntersection);
 		Step current = path.getGraphicalPath().get(0);
 	    setCurrentSegment(current.getSegment());
-	    if (routeType.equals("fastest")) 
-	    	type = Method.FASTEST.value;
-	    else if (routeType.equals("shortest"))
-	    	type = Method.SHORTEST.value;
-	    else if (routeType.equals("dynamicSmart")) {
-	    	type = Method.DYNAMICSMART.value;
-//	    	System.out.println(getLocalName() + " soy inteligente");
-	    	smart = true;
-	    } else type = Method.STARTSMART.value;
+
 		//Create new CarData object
 		carData = new CarData(
 				getName().toString(),  // Id

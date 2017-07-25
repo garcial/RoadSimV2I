@@ -20,7 +20,7 @@ public class Main {
 	private static final long startingTick = 18*3600 + 59*60;
 	
 	//Finish the simulation at specific tick: 00:00
-	private static final long finishingTick = 23*3600;
+	private static final long finishingTick = 21*3600;
 	
 	//Draw the GUI
 	private static final boolean drawGUI = true;

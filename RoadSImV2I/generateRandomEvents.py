@@ -6,6 +6,7 @@ intersectionsCs = ['I-N340-01','I-CV1520-01', 'I-N340a-01',  'I-CV149-01']
 
 algorithms = ['dynamicSmart', 'shortest', 'smartest', 'startSmart']
 justDynamics =['dynamicSmart']
+algorithmsTwo = ['dynamicSmart', 'startSmart']
 
 eventsFile = open("eventos.csv", 'a')
 
@@ -32,12 +33,12 @@ def generateRandomSample(startinHour, finalHour, num, algorithmType=None):
 
 		if algorithmType == None:
 
-			algorithm = random.choice(algorithms)
+			algorithm = random.choice(algorithmsTwo)
 		else:
 			algorithm = algorithmType
 
 		eventsFile.write("newCar," + str(hour).zfill(2) + ":" + str(minute).zfill(2) + "," + start + "," + end +
-			"," + str(speed) + "," + "dynamicSmart" + "\n")
+			"," + str(speed) + "," + algorithm + "\n")
 
 def generateStress(hour, minute, num):
 
@@ -56,7 +57,7 @@ def generateStress(hour, minute, num):
 
 #All day
 print('Genera datos desde las 19:00 hasta las 21:00')
-generateRandomSample(19, 21, 4500)
+generateRandomSample(19, 19, 1500)
 
 #Morning
 #generateRandomSample(8, 9, 1000)
