@@ -106,13 +106,13 @@ public class SegmentListenBehaviour extends Behaviour {
 					if (currentSL != previousServiceLevel) {
 						//Store current data of the edge in the list of 
 						// previous data
-						Edge myEdge = agent.getSegment().getMyEdge();
-						myEdge.getEdgeDataList().add(
-								new EdgeData(previousServiceLevel,
-										agent.getJgrapht().getEdgeWeight(myEdge),
-										agent.getTini(),
-										car.getLong("tick")	
-								));
+//						Edge myEdge = agent.getSegment().getMyEdge();
+//						myEdge.getEdgeDataList().add(
+//								new EdgeData(previousServiceLevel,
+//										agent.getJgrapht().getEdgeWeight(myEdge),
+//										agent.getTini(),
+//										car.getLong("tick")	
+//								));
 						agent.setTini(car.getLong("tick"));
 						//Change the weight of this edge in the 
 						//  jgrapht
@@ -124,7 +124,7 @@ public class SegmentListenBehaviour extends Behaviour {
 						averageSpeed = averageSpeed / numCars;
 						//Update the weight in the jgraph of the map
 						agent.getJgrapht().setEdgeWeight(
-								myEdge,
+								agent.getSegment().getMyEdge(),
 								segment.getLength() /  averageSpeed );
 
 						previousServiceLevel = currentSL;

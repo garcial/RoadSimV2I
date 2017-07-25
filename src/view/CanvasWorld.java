@@ -210,8 +210,8 @@ public class CanvasWorld extends JFrame
 	 * @param x
 	 * @param y
 	 */
-	public void addCar(String ag, String id, int algorithmColor, float x, float y) {
-		contentPane.addCar(ag, id, algorithmColor, x, y);	
+	public void addCar(String ag, String id, int algorithmType, float x, float y) {
+		contentPane.addCar(ag, id, algorithmType, x, y);	
 	}
 
 	/**

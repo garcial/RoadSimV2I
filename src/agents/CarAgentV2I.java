@@ -93,7 +93,16 @@ public class CarAgentV2I extends Agent {
 		useLog = (boolean) this.getArguments()[7];
 	
 		
-		// Set the initial values for the carAgent on the road
+	    if (routeType.equals("fastest")) 
+	    	type = Method.FASTEST.value;
+	    else if (routeType.equals("shortest"))
+	    	type = Method.SHORTEST.value;
+	    else if (routeType.equals("dynamicSmart")) {
+	    	type = Method.DYNAMICSMART.value;
+//	    	System.out.println(getLocalName() + " soy inteligente");
+	    	smart = true;
+	    } else type = Method.STARTSMART.value;
+	    
 		//Get the desired Path from the origin to the destination
 		// using the jgrapht
 		path = getPathOnMethod(initialIntersection, 
@@ -104,9 +113,11 @@ public class CarAgentV2I extends Agent {
 	    	type = Method.FASTEST.value;
 	    else if (routeType.equals("shortest"))
 	    	type = Method.SHORTEST.value;
-	    else if (routeType.equals("dynamicSmart"))
+	    else if (routeType.equals("dynamicSmart")) {
 	    	type = Method.DYNAMICSMART.value;
-	    else type = Method.STARTSMART.value;
+//	    	System.out.println(getLocalName() + " soy inteligente");
+	    	smart = true;
+	    } else type = Method.STARTSMART.value;
 		//Create new CarData object
 		carData = new CarData(
 				getName().toString(),  // Id
