@@ -78,9 +78,9 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 				// First calculate the currentSpeed,Greenshield model
 				int currentSpeed = (int) Math.min(
 				     carAgentV2I.getMaxSpeed(),
-				     (carAgentV2I.getCurrentTrafficDensity() >= 28.2)? 5:
+				     (carAgentV2I.getCurrentTrafficDensity() >= 43f)? 5:
 				     carAgentV2I.getCurrentSegment().getMaxSpeed() *
-	                 (1-carAgentV2I.getCurrentTrafficDensity()/28.2));
+	                 (1-carAgentV2I.getCurrentTrafficDensity()/43f));
 				
 				carAgentV2I.getCarData().setCurrentSpeed(currentSpeed);
 				

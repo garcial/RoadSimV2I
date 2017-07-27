@@ -78,15 +78,15 @@ public class SegmentListenBehaviour extends Behaviour {
 					
 					//Set the service level
 					int currentSL;
-					if (density < 6.2) {						
+					if (density < 11) {						
 						currentSL = 0; // 'A';
-					} else if (density < 10.0) {
+					} else if (density < 18) {
 						currentSL = 1; // 'B';
-					} else if (density < 15.0) {
+					} else if (density < 26) {
 						currentSL = 2; // 'C';
-					} else if (density < 20.0) {
+					} else if (density < 35) {
 						currentSL = 3; // 'D';
-					} else if (density < 22.8) {
+					} else if (density < 43) {
 						currentSL = 4; // 'E';
 					} else 
 						currentSL = 5; // 'F';
