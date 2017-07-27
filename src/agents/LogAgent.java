@@ -45,7 +45,7 @@ public class LogAgent extends Agent {
 		          this.getArguments()[0] + "dataSegments.csv"));
 		try {
 			Files.write(Paths.get(getDataAgentsFile().getName()),
-				   "Name\tTime\tType\tDistance\n".getBytes());
+				   "Name\tTime\tType\tDistance\tTini\tTFin\n".getBytes());
 			Files.write(Paths.get(getDataSegmentsFile().getName()),
 				   ("Name\tTime\tMaxSpeed\tCurrentSpeed\t" +
 			        "Shortest\tFastest\tStartSmart\tDynamicSmart\n").getBytes());
@@ -87,6 +87,10 @@ public class LogAgent extends Agent {
 							data.append(car.getInt("type"));
 							data.append("\t");
 							data.append((float)car.getDouble("distance"));
+							data.append("\t");
+							data.append(car.getLong("tini"));
+							data.append("\t");
+							data.append(car.getLong("tfin"));
 							data.append("\n");
 							Files.write(Paths.get(getDataAgentsFile().getName()),
 									   data.toString().getBytes(),

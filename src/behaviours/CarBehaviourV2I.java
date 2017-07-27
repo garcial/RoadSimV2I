@@ -223,6 +223,8 @@ public class CarBehaviourV2I extends CyclicBehaviour {
 			data.put("time", currentTick - carAgentV2I.getTini());
 			data.put("type", carAgentV2I.getTypeOfAlgorithm());
 			data.put("distance", carAgentV2I.getCarData().getTripDistanceCovered());
+			data.put("tini", carAgentV2I.getTini());
+			data.put("tfin", currentTick);
 			msg.setContent(data.toString());
 			carAgentV2I.send(msg);
 		}

@@ -33,7 +33,7 @@ def generateRandomSample(startinHour, finalHour, num, algorithmType=None):
 
 		if algorithmType == None:
 
-			algorithm = random.choice(algorithmsTwo)
+			algorithm = random.choice(justDynamics)
 		else:
 			algorithm = algorithmType
 
@@ -57,7 +57,7 @@ def generateStress(hour, minute, num):
 
 #All day
 print('Genera datos desde las 19:00 hasta las 21:00')
-generateRandomSample(19, 19, 1500)
+generateRandomSample(19, 19, 3000)
 
 #Morning
 #generateRandomSample(8, 9, 1000)

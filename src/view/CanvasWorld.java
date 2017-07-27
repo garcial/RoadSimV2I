@@ -379,13 +379,13 @@ public class CanvasWorld extends JFrame
 				} else if (m.getAlgorithmType() == Method.FASTEST.value) {
 						c = Color.CYAN;
   					  } else if (m.getAlgorithmType() == Method.DYNAMICSMART.value) {
-  						  		c = Color.PINK;
+  						  		c = Color.BLACK;
 					         } else if (m.getAlgorithmType() == Method.STARTSMART.value) 
 					        	c = Color.ORANGE;
 				g.setStroke(new BasicStroke(1));
 
 				//Car draw as a circle
-				oval.setFrame(x - 3, y - 3, 6, 6); 
+				oval.setFrame(x - 6, y - 6, 12, 12); 
 
 				g.setColor(c);
 				g.fill(oval);
