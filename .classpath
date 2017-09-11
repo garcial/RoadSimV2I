@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/Jade4.5/jade/lib/jade.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/antlr4-runtime-4.5.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgraph-5.13.0.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgrapht-core-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgrapht-demo-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgrapht-ext-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgrapht-ext-1.0.1-uber.jar"/>
-	<classpathentry kind="lib" path="C:/Users/garcial/Desktop/Material_diverso_docencia/jgrapht-1.0.1/lib/jgraphx-2.0.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/JADE-all-4/jade/lib/jade.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/antlr4-runtime-4.5.3.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgraph-5.13.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgrapht-core-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgrapht-demo-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgrapht-ext-1.0.1-uber.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgrapht-ext-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/Users/luisamablegarciafernandez/Desktop/Software variado/jgrapht-1.0.1/lib/jgraphx-2.0.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -116,7 +116,7 @@ public class EventManagerAgent extends Agent {
 
 		for(int i=0; i<files.length; i++){
 
-			if(files[i].getName().equals("50NoS0s.csv")){
+			if(files[i].getName().equals("0N100DS.csv")){
 				try {
 					eventsReader = new BufferedReader(
 						new FileReader(files[i].getAbsolutePath()));
